@@ -7,9 +7,12 @@ public class City{
 	private String nomVille;
 	private double longitude;
 	private double latitude;
-	
+
+	private Integer abscisse;
+	private Integer ordonnee;
+
 	private HashMap<City, Double> distanceCache;
-	
+
 	// constructor
 
 	public City(String nomVille, double latitude, double longitude) {
@@ -17,12 +20,12 @@ public class City{
 		this.nomVille = nomVille;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		
+
 		this.distanceCache = new HashMap<>();
 	}
-	
+
 	// accessors
-	
+
 	public String getNomVille() {
 		return nomVille;
 	}
@@ -33,6 +36,32 @@ public class City{
 
 	public double getLatitude() {
 		return latitude;
+	}
+
+	public int setAbscisse(double longitude0, double longitudeMax, int width){
+
+		double distance1 = Utils.distanceGPS(0,longitude0,0,this.longitude);
+		double distance2 = Utils.distanceGPS(0,longitude0,0,longitudeMax);
+		this.abscisse =  (int) ((distance1*width)/distance2);
+
+		return this.abscisse;
+	}
+
+	public int getAbscisse(){
+		return this.abscisse;
+	}
+
+	public int setOrdonnee(double latitude0, double latitudeMax, int height){
+
+		double distance1 = Utils.distanceGPS(latitude0,0,this.latitude,0);
+		double distance2 = Utils.distanceGPS(latitude0,0,latitudeMax,0);
+		this.ordonnee =  (int) ((distance1*height)/distance2);
+
+		return this.ordonnee;
+	}
+
+	public int getOrdonnee(){
+		return this.ordonnee;
 	}
 
 	// functions
@@ -69,7 +98,7 @@ public class City{
 			return false;
 		return true;
 	}
-	
+
 	public double distanceTo(City other){
 		if (! this.distanceCache.containsKey(other)){
 			this.distanceCache.put(other, Utils.distanceGPS(latitude, longitude, other.getLatitude(), other.getLongitude()));

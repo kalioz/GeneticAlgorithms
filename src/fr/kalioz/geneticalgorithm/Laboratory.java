@@ -103,9 +103,13 @@ public class Laboratory<T extends Individual> {
 	}
 	
 	public void run(){
-		while (stagnation < maxStagnation){
+		while (! shouldStop()){
 			this.nextGeneration();
 		}
+	}
+	
+	public boolean shouldStop(){
+		return this.stagnation >= maxStagnation;
 	}
 
 	/**
@@ -120,8 +124,13 @@ public class Laboratory<T extends Individual> {
 		return bestFitnessHistory.get(size-1).floatValue()== bestFitnessHistory.get(size-2).floatValue();
 	}
 	
-	public Individual getBest(){
-		return Laboratory.getBest(population);
+	@SuppressWarnings("unchecked")
+	public T getBest(){
+		Individual best = Laboratory.getBest(population);
+		if (best==null){
+			return null;
+		}
+		return (T) best;
 	}
 	
 	public float getBestFitness(){
